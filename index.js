@@ -40,6 +40,7 @@ var htmlSplash;
 var htmlCompiTore;
 var htmlSpielerTore;
 var htmlEingabe;
+var htmlAusruf;
 
 // Unsere Funktionen. Hier erfinden wir sie.
 
@@ -87,6 +88,7 @@ function schussSpieler() {
 }
 
 function prüfeTor() {
+  htmlAusruf.innerText = "Schuss!";
   var tor = false;
 
   htmlEingabe.readOnly = true;
@@ -95,6 +97,7 @@ function prüfeTor() {
   htmlEingabe.classList.add("lösung");
 
   if (ballPosition === -3 || ballPosition === 3) {
+    htmlAusruf.innerText = "Tor!";
     tor = true;
 
     if (ballPosition === -3) {
@@ -108,6 +111,7 @@ function prüfeTor() {
   }
 
   setTimeout(function () {
+    htmlAusruf.innerText = "";
     htmlRechenZahl1.classList.remove("lösung");
     htmlRechenZahl2.classList.remove("lösung");
     htmlEingabe.classList.remove("lösung");
@@ -200,6 +204,7 @@ function wennSeiteBereitIst() {
   htmlCompiTore = window.document.getElementById("tor-compi");
   htmlSpielerTore = window.document.getElementById("tor-spieler");
   htmlEingabe = window.document.getElementById("eingabe");
+  htmlAusruf = window.document.getElementById("ausruf");
   // Dem Startknopf zuhören, wann er gedrückt wird.
   htmlStartKnopf.onclick = start;
   htmlStartKnopf.focus();
