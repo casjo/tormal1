@@ -1,0 +1,18 @@
+# name: ${file(./gatsby-config.js):siteMetadata.hostname}
+name: www-tormal1-ch
+stage: production
+
+website:
+  component: '@serverless/website'
+  inputs:
+    code:
+      root: ./
+      src: ./
+      # hook not needed
+    region: eu-central-1
+    # bucketName: ${file(./gatsby-config.js):siteMetadata.hostname}
+    # bucketName: ${name}-${stage}
+    bucketName: www-tormal1-ch-production
+    # domain: ${file(./gatsby-config.js):siteMetadata.FQDN}
+    # domain: ${name}
+    domain: www.tormal1.ch

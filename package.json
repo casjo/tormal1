@@ -1,0 +1,23 @@
+{
+  "name": "tormal1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "serverless"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casjo/tormal1.git"
+  },
+  "keywords": [],
+  "author": "CasJo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/casjo/tormal1/issues"
+  },
+  "homepage": "https://github.com/casjo/tormal1#readme",
+  "devDependencies": {
+    "serverless": "^1.72.0"
+  }
+}

@@ -13,16 +13,16 @@
 }
 
 .goal {
-  width: 50px;
+  width: 2.5ch;
   background: rgb(250, 250, 252);
-  height: 450px;
+  height: 80%;
   font-size: 200%;
 }
 
 .mittellinie {
   background-color: white;
   height: 100%;
-  width: 10px;
+  width: 0.5em;
 }
 
 .lösung {
@@ -30,14 +30,14 @@
 }
 
 .ball {
-  transition: left 3s;
+  transition: left 1.5s;
   position: absolute;
-  top: calc(50% - 25px);
-  left: calc(50% - 25px);
-  height: 50px;
-  width: 50px;
+  top: calc(50% - 1.5em);
+  left: calc(50% - 1.5em);
+  height: 3em;
+  width: 3em;
   background: rgb(236, 13, 13);
-  border-radius: 25px;
+  border-radius: 1.5em;
 }
 
 .zahl1 {
