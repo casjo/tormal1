@@ -25,13 +25,18 @@
   width: 10px;
 }
 
+.lösung {
+  color: rgb(13, 13, 228) !important;
+}
+
 .ball {
+  transition: left 3s;
   position: absolute;
   top: calc(50% - 25px);
   left: calc(50% - 25px);
   height: 50px;
   width: 50px;
-  background: rgb(65, 147, 202);
+  background: rgb(236, 13, 13);
   border-radius: 25px;
 }
 
@@ -63,6 +68,14 @@
   color: rgb(30, 255, 1);
 }
 
+.ausruf {
+  position: absolute;
+  top: 16%;
+  left: 10%;
+  font-size: 5em;
+  color: rgb(30, 255, 1);
+}
+
 .splash {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
@@ -81,7 +94,7 @@
 }
 
 .meldung {
-  font-size: 5em;
+  font-size: 3em;
   color: rgb(2, 89, 250);
   padding: 0 1.5em;
 }
