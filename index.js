@@ -9,9 +9,9 @@ var sekunde = 1000;
 var compiDenkt;
 
 // Globale Einstellungen, die nie ändern
-var spielDauer = 300 * sekunde;
-var compiDenkDauer = 100 * sekunde;
-var warteZeit = 4 * sekunde;
+var spielDauer = 180 * sekunde;
+var compiDenkDauer = 10 * sekunde;
+var warteZeit = 3 * sekunde;
 
 // Variablen, die immer etwas ändern.
 
@@ -30,6 +30,17 @@ var spielerSchüsseTotal = 0;
 // Sagen wir mal Mitte sei 0. Dann geht der Ball wohl von -3 bis 3.
 var ballPosition = 0;
 
+// Diese Elemente verändern wir (oder bei Eingabe: hören wir) auf der Webseite
+var htmlBall;
+var htmlRechenZahl1;
+var htmlRechenZahl2;
+var htmlMeldung;
+var htmlStartKnopf;
+var htmlSplash;
+var htmlCompiTore;
+var htmlSpielerTore;
+var htmlEingabe;
+
 // Unsere Funktionen. Hier erfinden wir sie.
 
 function rechnungStellen() {
@@ -44,7 +55,6 @@ function rechnungStellen() {
   compiDenkt = setTimeout(schussCompi, compiDenkDauer);
   // Fokus auf Eingabefeld setzen, damit Spieler einfach tippen kann und nicht zuerst klicken muss.
   htmlEingabe.value = "";
-  htmlEingabe.readOnly = false;
   htmlEingabe.focus();
   htmlRechenZahl1.innerText = rechenZahl1;
   htmlRechenZahl2.innerText = rechenZahl2;
@@ -77,10 +87,15 @@ function schussSpieler() {
 }
 
 function prüfeTor() {
+  var tor = false;
+
   htmlEingabe.readOnly = true;
+  htmlRechenZahl1.classList.add("lösung");
+  htmlRechenZahl2.classList.add("lösung");
+  htmlEingabe.classList.add("lösung");
+
   if (ballPosition === -3 || ballPosition === 3) {
-    ballPosition = 0;
-    setzeHtmlBall();
+    tor = true;
 
     if (ballPosition === -3) {
       compiTore = compiTore + 1;
@@ -92,7 +107,18 @@ function prüfeTor() {
     htmlSpielerTore.innerText = spielerTore;
   }
 
-  setTimeout(rechnungStellen, warteZeit);
+  setTimeout(function () {
+    htmlRechenZahl1.classList.remove("lösung");
+    htmlRechenZahl2.classList.remove("lösung");
+    htmlEingabe.classList.remove("lösung");
+    htmlEingabe.readOnly = false;
+
+    if (tor) {
+      ballPosition = 0;
+      setzeHtmlBall();
+    }
+    rechnungStellen();
+  }, warteZeit);
 }
 
 function start() {
@@ -101,7 +127,9 @@ function start() {
   // Punkte beischbil ===5/8
   // was er geschrieben hat
   compiTore = 0;
+  htmlCompiTore.innerText = compiTore;
   spielerTore = 0;
+  htmlSpielerTore.innerText = spielerTore;
   spielerSchüsseTotal = 0;
   ballPosition = 0;
   setzeHtmlBall();
@@ -120,15 +148,19 @@ function start() {
 
 function fertig() {
   // aless Dunkler
+  clearTimeout(compiDenkt);
+  clearTimeout(warteZeit);
   htmlSplash.classList.remove("hidden");
   // anzeige Gewwwwwwwwonen
   if (spielerTore > compiTore) {
-    htmlMeldung.innerText = "Gratuliere! Du hast gewonnen!";
+    htmlMeldung.innerText =
+      "Gratuliere! Du hast gewonnen! Willst du nochmals spielen?";
   } else {
     htmlMeldung.innerText =
       "Du hast " +
       spielerSchüsseTotal +
-      " Schüsse geschafft, nächstes Mal schaffst du " +
+      (spielerSchüsseTotal === 1 ? "Schuss" : "Schüsse") +
+      " geschafft, nächstes Mal schaffst du " +
       (spielerSchüsseTotal + 1) +
       "!";
   }
@@ -141,18 +173,6 @@ function fertig() {
  * Mit der webseite synchronisieren
  */
 
-// Diese Elemente verändern wir (oder bei Eingabe: hören wir) auf der Webseite
-var htmlBall;
-var htmlBall;
-var htmlRechenZahl1;
-var htmlRechenZahl2;
-var htmlMeldung;
-var htmlStartKnopf;
-var htmlSplash;
-var htmlCompiTore;
-var htmlSpielerTore;
-var htmlEingabe;
-
 function setzeHtmlBall() {
   // wir haben ballPosition und wollen nun den htmlBall richtig zeichnen!
 
@@ -164,7 +184,6 @@ function setzeHtmlBall() {
   // Bsp:                calc(50% - 25px)
   htmlBall.style.left = "calc(" + prozent + "% - 25px)";
 }
-
 // Was noch?
 
 // Hier: die Liste, worauf das Programm achten muss (also die externen "Ereignisse")

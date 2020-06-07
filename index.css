@@ -38,11 +38,13 @@
 .zahl1 {
   color: white;
   font-size: 1000%;
+  width: 1ch;
 }
 
 .zahl2 {
   color: white;
   font-size: 1000%;
+  width: 1ch;
 }
 
 .schreibfeld {
@@ -81,6 +83,7 @@
 .meldung {
   font-size: 5em;
   color: rgb(2, 89, 250);
+  padding: 0 1.5em;
 }
 
 .start {
