@@ -10,9 +10,9 @@ var compiDenkt
 var zeigeLösung
 
 // Globale Einstellungen, die nie ändern
-var spielDauer = 180 * sekunde
-var compiDenkDauer = 10 * sekunde
-var warteZeit = 3 * sekunde
+var spielDauer = 180 * sekunde;
+var compiDenkDauer = 8 * sekunde;
+var warteZeit = 3 * sekunde;
 
 // Variablen, die immer etwas ändern.
 
