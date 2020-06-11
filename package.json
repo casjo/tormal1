@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prettier": {
+    "semi": true,
+    "singleQuote": true
+  },
   "scripts": {
     "deploy": "serverless"
   },
@@ -18,6 +22,7 @@
   },
   "homepage": "https://github.com/casjo/tormal1#readme",
   "devDependencies": {
+    "prettier": "^2.0.5",
     "serverless": "^1.72.0"
   }
 }
