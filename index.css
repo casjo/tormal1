@@ -79,6 +79,8 @@
 .splash {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
+  color: rgb(2, 89, 250);
+  font-size: 3em;
   top: 0;
   left: 0;
   right: 0;
@@ -89,18 +91,23 @@
   align-items: center;
 }
 
+.highscore {
+  justify-self: start;
+  height: 10%;
+}
+
 .hidden {
   visibility: hidden;
 }
 
 .meldung {
-  font-size: 3em;
+  /* font-size: 3em; */
   color: rgb(2, 89, 250);
   padding: 0 1.5em;
 }
 
 .start {
-  font-size: 3.5em;
+  /* font-size: 3.5em; */
   background-color: #2222ee;
   border: none;
   color: white;

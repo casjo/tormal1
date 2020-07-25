@@ -1,3 +1,9 @@
+// hier speichern wir Dinge fürs nächste Spiel
+
+// vergessen: funktionen: imBrowserSpeichern(7), und: vomBrowserLaden() => 7
+
+// --> funktonen: timerStarten(), timerLesen() <-- gibt die Zeit zurück seit timerStarten()
+
 // Meldung:
 // Gratuliere! Du hast gewonnen!
 // Du hast 2 Schüsse geschafft, nächstes Mal schaffst du 3!
@@ -7,11 +13,49 @@
 // Kleine Helfer
 var sekunde = 1000;
 var compiDenkt;
-var zeigeLösung;
+var lösungBaldAus;
+
+// Unser Timer
+var startZeit;
+
+var highscore = Number(localStorage.getItem('highscore') || 0);
+
+new Date().getTime();
+
+function timerStarten() {
+  startZeit = new Date().getTime();
+}
+
+function timerLesen() {
+  var jetzt = new Date().getTime();
+  var dauer = jetzt - startZeit;
+  return dauer;
+}
+
+// 400, damit bei 8 Sekunden denkDauer der Level grad 50 ist.
+var LEVEL_FAKTOR = 400 * sekunde;
+var compiAnfangsDenkdauer = 8 * sekunde;
+
+function level() {
+  return Math.floor(LEVEL_FAKTOR / compiDenkDauer);
+}
+
+function setzeDenkdauer(neueDauer) {
+  neueDauer = Math.floor(neueDauer)
+  compiDenkDauer = neueDauer;
+  localStorage.setItem('denkDauer', neueDauer);
+}
+
+function setzeHighscore(neueScore) {
+  highscore = neueScore;
+  localStorage.setItem('highscore', neueScore);
+}
 
 // Globale Einstellungen, die nie ändern
-var spielDauer = 180 * sekunde;
-var compiDenkDauer = 8 * sekunde;
+var spielDauer = 60 * sekunde;
+var compiDenkDauer = Number(
+  localStorage.getItem('denkDauer') || compiAnfangsDenkdauer
+);
 var warteZeit = 3 * sekunde;
 
 // Variablen, die immer etwas ändern.
@@ -27,6 +71,10 @@ var compiTore = 0;
 var spielerTore = 0;
 
 var spielerSchüsseTotal = 0;
+
+// Für den Durchschnitt
+var denkdauerTotal = 0;
+var schüsseTotal = 0;
 
 // Sagen wir mal Mitte sei 0. Dann geht der Ball wohl von -3 bis 3.
 var ballPosition = 0;
@@ -49,7 +97,7 @@ function rechnungStellen() {
   // 2 Zufallszahlen!
   // benutze Math.random() und auch Math.floor()
   // rechenZahl1 = ...
-
+  timerStarten();
   rechenZahl1 = Math.floor(Math.random() * 10);
 
   rechenZahl2 = Math.floor(Math.random() * 10);
@@ -57,9 +105,9 @@ function rechnungStellen() {
   compiDenkt = setTimeout(schussCompi, compiDenkDauer);
   // Fokus auf Eingabefeld setzen, damit Spieler einfach tippen kann und nicht zuerst klicken muss.
   htmlEingabe.value = '';
-  htmlEingabe.focus();
   htmlRechenZahl1.innerText = rechenZahl1;
   htmlRechenZahl2.innerText = rechenZahl2;
+  htmlEingabe.focus();
 }
 
 function prüfeSpielerEingabe() {
@@ -73,7 +121,6 @@ function schussCompi() {
   ballPosition = ballPosition - 1;
   setzeHtmlBall();
   htmlEingabe.value = rechenZahl1 * rechenZahl2;
-  // Eingabefeld Spieler leeren
   prüfeTor();
 }
 
@@ -83,19 +130,37 @@ function schussSpieler() {
   // TODO: Lösung anzeigen
   ballPosition = ballPosition + 1;
   setzeHtmlBall();
-  // TODO: Eingabefeld Spieler leeren
   spielerSchüsseTotal = spielerSchüsseTotal + 1;
   prüfeTor();
 }
 
+function lösungEinOderAus(aktiv) {
+  if (aktiv === true) {
+    htmlAusruf.innerText = 'Schuss!';
+    htmlEingabe.readOnly = true;
+    htmlRechenZahl1.classList.add('lösung');
+    htmlRechenZahl2.classList.add('lösung');
+    htmlEingabe.classList.add('lösung');
+  } else {
+    htmlAusruf.innerText = '';
+    htmlEingabe.readOnly = false;
+    htmlRechenZahl1.classList.remove('lösung');
+    htmlRechenZahl2.classList.remove('lösung');
+    htmlEingabe.classList.remove('lösung');
+  }
+}
+
 function prüfeTor() {
-  htmlAusruf.innerText = 'Schuss!';
+  var schussDauer = timerLesen();
+
+  // denkdauerTotal um schussDauer erhöhen
+  denkdauerTotal = denkdauerTotal + schussDauer;
+
+  schüsseTotal = schüsseTotal + 1;
+
   var tor = false;
 
-  htmlEingabe.readOnly = true;
-  htmlRechenZahl1.classList.add('lösung');
-  htmlRechenZahl2.classList.add('lösung');
-  htmlEingabe.classList.add('lösung');
+  lösungEinOderAus(true);
 
   if (ballPosition === -3 || ballPosition === 3) {
     htmlAusruf.innerText = 'Tor!';
@@ -111,12 +176,8 @@ function prüfeTor() {
     htmlSpielerTore.innerText = spielerTore;
   }
 
-  zeigeLösung = setTimeout(function () {
-    htmlAusruf.innerText = '';
-    htmlRechenZahl1.classList.remove('lösung');
-    htmlRechenZahl2.classList.remove('lösung');
-    htmlEingabe.classList.remove('lösung');
-    htmlEingabe.readOnly = false;
+  lösungBaldAus = setTimeout(function () {
+    lösungEinOderAus(false);
 
     if (tor) {
       ballPosition = 0;
@@ -139,9 +200,9 @@ function start() {
   ballPosition = 0;
   setzeHtmlBall();
 
-  rechnungStellen();
-
   setTimeout(fertig, spielDauer);
+
+  rechnungStellen();
 
   /*
   goals -> 0
@@ -152,22 +213,51 @@ function start() {
 }
 
 function fertig() {
+  // Ball setzen braucht Zeit. Es sieht schöner aus, wenn wir ihn hier zurücksetzen,
+  // als erst wenn das Spiel wieder beginnt.
+  ballPosition = 0;
+  setzeHtmlBall();
+  // Falls Spiel aus ist, wenn lösung ein, dann blockiert das Eingabefeld beim
+  // nächsten Spiel.
+  lösungEinOderAus(false);
+
+  // Durchschnittszeit um eine Rechnung zu lösen
+  var durchschnittsZeit = denkdauerTotal / schüsseTotal;
   // aless Dunkler
   clearTimeout(compiDenkt);
-  clearTimeout(zeigeLösung);
+  clearTimeout(lösungBaldAus);
   htmlSplash.classList.remove('hidden');
   // anzeige Gewwwwwwwwonen
+  var alterLevel = level();
   if (spielerTore > compiTore) {
-    htmlMeldung.innerText =
-      'Gratuliere! Du hast gewonnen! Willst du nochmals spielen?';
+    if (alterLevel > highscore) {
+      setzeHighscore(alterLevel);
+    }
+    setzeDenkdauer(durchschnittsZeit);
+    htmlHighscore.innerText = highscore;
+
+    var nochmalsSpielenText =
+      level() < highscore
+        ? 'Willst du nochmals spielen?'
+        : 'Schaffst du diesen Level für die Highscore nochmals?';
+
+    htmlMeldung.innerHTML =
+      'Gratuliere! Du hast Level ' +
+      level() +
+      ' erreicht!<br /><br />' +
+      nochmalsSpielenText;
   } else {
-    htmlMeldung.innerText =
+    setzeDenkdauer(compiDenkDauer + 1 * sekunde);
+    htmlHighscore.innerText = highscore;
+    htmlMeldung.innerHTML =
       'Du hast ' +
       spielerSchüsseTotal +
       (spielerSchüsseTotal === 1 ? ' Schuss' : ' Schüsse') +
-      ' geschafft, nächstes Mal schaffst du ' +
-      (spielerSchüsseTotal + 1) +
-      '! Nochmals spielen?';
+      ' auf Level ' +
+      alterLevel +
+      ' geschafft!<br /><br />Spielst du nochmals auf Level ' +
+      level() +
+      '?';
   }
 
   // Damit man auch mit Enter weiterkann
@@ -200,6 +290,7 @@ function wennSeiteBereitIst() {
   htmlRechenZahl1 = window.document.getElementById('zahl1');
   htmlRechenZahl2 = window.document.getElementById('zahl2');
   htmlMeldung = window.document.getElementById('meldung');
+  htmlHighscore = window.document.getElementById('highscore');
   htmlStartKnopf = window.document.getElementById('startknopf');
   htmlSplash = window.document.getElementById('splash');
   htmlCompiTore = window.document.getElementById('tor-compi');
@@ -214,6 +305,15 @@ function wennSeiteBereitIst() {
     eingabe = parseFloat(e.target.value);
     prüfeSpielerEingabe();
   };
+
+  // Willkommensgruss
+  htmlHighscore.innerText = highscore;
+  htmlMeldung.innerHTML =
+    'Willkommen bei Tormal1!<br /><br />Dein Level: ' +
+    level() +
+    '<br /><br />Ein Spiel dauert ' +
+    spielDauer / sekunde +
+    ' Sekunden.';
 }
 
 // Nachdem jemand zu unserer Seite kommt: Wenn die Webseite mit allen Elementen bereit ist.
