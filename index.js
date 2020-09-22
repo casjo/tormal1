@@ -309,7 +309,7 @@ function wennSeiteBereitIst() {
   // Willkommensgruss
   htmlHighscore.innerText = highscore;
   htmlMeldung.innerHTML =
-    'Willkommen bei Tormal1!<br /><br />Dein Level: ' +
+    'Willkommen bei Tormal1!<br /><br /> Spieltempo: ' +
     level() +
     '<br /><br />Ein Spiel dauert ' +
     spielDauer / sekunde +

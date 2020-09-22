@@ -36,7 +36,7 @@
   left: calc(50% - 1.5em);
   height: 3em;
   width: 3em;
-  background: rgb(236, 13, 13);
+  background: rgba(2, 0, 0, 0.404);
   border-radius: 1.5em;
 }
 
@@ -91,7 +91,7 @@
   align-items: center;
 }
 
-.highscore {
+.max-tempo {
   justify-self: start;
   height: 10%;
 }
@@ -116,4 +116,20 @@
 
 .start:hover {
   background-color: #4444ee;
+}
+
+.minus {
+  font-size: 3.5em;
+  background-color: #2222ee;
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.plus {
+  font-size: 3.5em;
+  background-color: #2222ee;
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
 }
