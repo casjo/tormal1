@@ -239,10 +239,10 @@ function fertig() {
     var nochmalsSpielenText =
       level() < highscore
         ? 'Willst du nochmals spielen?'
-        : 'Schaffst du diesen Level für die Highscore nochmals?';
+        : 'Schaffst du das Tempo für einen neuen Rekord nochmals?';
 
     htmlMeldung.innerHTML =
-      'Gratuliere! Du hast Level ' +
+      'Gratuliere! Du hast Tempo ' +
       level() +
       ' erreicht!<br /><br />' +
       nochmalsSpielenText;
@@ -253,11 +253,9 @@ function fertig() {
       'Du hast ' +
       spielerSchüsseTotal +
       (spielerSchüsseTotal === 1 ? ' Schuss' : ' Schüsse') +
-      ' auf Level ' +
+      ' auf Tempo ' +
       alterLevel +
-      ' geschafft!<br /><br />Spielst du nochmals auf Level ' +
-      level() +
-      '?';
+      ' geschafft!<br /><br />Spielst du nochmals etwas langsamer?';
   }
 
   // Damit man auch mit Enter weiterkann
