@@ -36,7 +36,7 @@ function timerLesen() {
 var LEVEL_FAKTOR = 400 * sekunde;
 var compiAnfangsDenkdauer = 8 * sekunde;
 
-function level() {
+function tempo() {
   return Math.floor(LEVEL_FAKTOR / compiDenkDauer);
 }
 
@@ -228,22 +228,22 @@ function fertig() {
   clearTimeout(lösungBaldAus);
   htmlSplash.classList.remove('hidden');
   // anzeige Gewwwwwwwwonen
-  var alterLevel = level();
+  var altesTempo = tempo();
   if (spielerTore > compiTore) {
-    if (alterLevel > highscore) {
-      setzeHighscore(alterLevel);
+    if (altesTempo > highscore) {
+      setzeHighscore(altesTempo);
     }
     setzeDenkdauer(durchschnittsZeit);
     htmlHighscore.innerText = highscore;
 
     var nochmalsSpielenText =
-      level() < highscore
+      tempo() < highscore
         ? 'Willst du nochmals spielen?'
         : 'Schaffst du das Tempo für einen neuen Rekord nochmals?';
 
     htmlMeldung.innerHTML =
       'Gratuliere! Du hast Tempo ' +
-      level() +
+      tempo() +
       ' erreicht!<br /><br />' +
       nochmalsSpielenText;
   } else {
@@ -254,7 +254,7 @@ function fertig() {
       spielerSchüsseTotal +
       (spielerSchüsseTotal === 1 ? ' Schuss' : ' Schüsse') +
       ' auf Tempo ' +
-      alterLevel +
+      altesTempo +
       ' geschafft!<br /><br />Spielst du nochmals etwas langsamer?';
   }
 
@@ -308,7 +308,7 @@ function wennSeiteBereitIst() {
   htmlHighscore.innerText = highscore;
   htmlMeldung.innerHTML =
     'Willkommen bei Tormal1!<br /><br /> Spieltempo: ' +
-    level() +
+    tempo() +
     '<br /><br />Ein Spiel dauert ' +
     spielDauer / sekunde +
     ' Sekunden.';
