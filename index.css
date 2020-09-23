@@ -36,7 +36,7 @@
   left: calc(50% - 1.5em);
   height: 3em;
   width: 3em;
-  background: rgba(2, 0, 0, 0.404);
+  background: rgb(236, 13, 13);
   border-radius: 1.5em;
 }
 
